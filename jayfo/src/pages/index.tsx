@@ -1,16 +1,59 @@
+import {ReactElement} from 'react'
 import Link from "next/link";
 import { GetStaticProps } from "next";
 import Topbanner from "@/components/Topbanner";
-import { client } from "@/lib/client";
-import ProductCard from "@/components/ProductCard";
+import { client, urlFor } from "@/lib/client";
 import Layout from "@/components/Layout";
+import { TbCurrencyNaira } from "react-icons/tb";
+import { useDispatch } from "react-redux";
+import { addToCart } from "@/features/cart/CartSlice";
+import toast from 'react-hot-toast'
+import Image from "next/image";
+import { Product } from "../../types";
 
 
-export default function Home({ data, product }: string | object) {
-  console.log(product);
 
-  const products = data.map((product: string | object) => (
-    <ProductCard item={product} />
+interface Props{
+  data: [Product]
+}
+
+
+
+
+export default function Home({ data }: Props) {
+  
+  const dispatch = useDispatch()
+  const AddToCart = (i:Product) => {
+    let x = {...i, qty: 1}
+    dispatch(addToCart(x))
+    toast.success(`Added ${i.name} to Cart`,
+    {
+      position: 'top-right',
+      iconTheme: {
+        primary: '#111827',
+        secondary: 'white'
+      }
+    })
+  }
+
+  const products = data.map((product) => (
+    
+    <div key={product._id}  className=" bg-white border  p-2 rounded-md" >
+    <Link href={product.slug.current} className="group" >
+      <div className="group">
+        <div className="overflow-hidden">
+        <Image src={urlFor(product.image).url()} alt={product.name} width={200} height={200} className="w-full h-1/2 hover:shadow group-hover:scale-110 transition ease-in-out 2sec" />
+        </div>
+        <div>
+        <h2 className="text-xl font-semibold">{product.name}</h2>
+        <p className="flex items-center font-bold text-gray-600"><TbCurrencyNaira/>{product.price}</p>
+       
+       </div>
+      </div>
+     
+    </Link>
+    <div className="py-4"><button className="rounded-sm hover:bg-gray-950 hover:shadow-md  bg-gray-900 px-4 py-2 text-white font-medium outline-none border-none" onClick={() => AddToCart(product)}>Add to Cart</button></div>
+    </div>
   ));
 
   return (
@@ -30,35 +73,35 @@ export default function Home({ data, product }: string | object) {
           </button>
         </div>
       </div>
-      {/* <Sidebar /> */}
-      <h2 className="text-4xl font-bold">Top deals</h2>
-      <div className="w-10/12 m-auto grid grid-cols-fluid gap-4 my-4">
+     
+      <h2 className="text-4xl font-bold px-4">Top deals</h2>
+      <div className="w-10/12 m-auto grid grid-cols-fluids gap-4 my-4">
         {products}
       </div>
      
       <section className="grid grid-cols-fluids p-4 gap-4">
-        <Link href='/stores?category=electronics' className="hover:scale-105 transition ease-in-out 1s">
-          <div className="flex items-center justify-center bg-[url('/g.jpeg')] bg-center bg-cover bg-no-repeat bg-black/50 bg-blend-overlay h-44">
+        <Link href='/stores?category=electronics' className="group overflow-hidden">
+          <div className="flex items-center justify-center group-hover:scale-110 transition ease-in-out 1s bg-[url('/g.jpeg')] bg-center bg-cover bg-no-repeat bg-black/50 bg-blend-overlay h-44">
           <h2 className="text-white text-2xl font-semibold">Electronics</h2>
         </div>
         </Link>
-        <Link href='/stores?category=furniture' className="hover:scale-105 transition ease-in-out 1s">
-        <div className="flex items-center justify-center bg-[url('/h.jpeg')] bg-center bg-cover bg-no-repeat bg-black/50 bg-blend-overlay h-44">
+        <Link href='/stores?category=furniture' className="group overflow-hidden">
+        <div className="flex items-center justify-center group-hover:scale-110 transition ease-in-out 1s bg-[url('/h.jpeg')] bg-center bg-cover bg-no-repeat bg-black/50 bg-blend-overlay h-44">
           <h2 className="text-white text-2xl font-semibold">Furniture</h2>
         </div>
         </Link>
-        <Link href='/stores?category=kitchen' className="hover:scale-105 transition ease-in-out 1s">
-        <div className="flex items-center justify-center bg-[url('/d.jpeg')] bg-center bg-cover bg-no-repeat bg-black/50 bg-blend-overlay h-44">
+        <Link href='/stores?category=kitchen' className="group overflow-hidden">
+        <div className="flex items-center justify-center group-hover:scale-110 transition ease-in-out 1s bg-[url('/d.jpeg')] bg-center bg-cover bg-no-repeat bg-black/50 bg-blend-overlay h-44">
           <h2 className="text-white text-2xl font-semibold">Kitchen</h2>
         </div>
         </Link>
-        <Link href='/stores?category=beddings' className="hover:scale-105 transition ease-in-out 1s">
-        <div className="flex items-center justify-center bg-[url('/a.jpeg')] bg-center bg-cover bg-no-repeat bg-black/50 bg-blend-overlay h-44">
+        <Link href='/stores?category=beddings' className="group overflow-hidden">
+        <div className="flex items-center justify-center group-hover:scale-110 transition ease-in-out 1s bg-[url('/a.jpeg')] bg-center bg-cover bg-no-repeat bg-black/50 bg-blend-overlay h-44">
           <h2 className="text-white text-2xl font-semibold">Beddings</h2>
         </div>
         </Link>
-        <Link href='/stores?category=curtains' className="hover:scale-105 transition ease-in-out 1s">
-        <div className="flex items-center justify-center bg-[url('/i.jpeg')] bg-center bg-cover bg-no-repeat bg-black/50 bg-blend-overlay h-44">
+        <Link href='/stores?category=curtains' className="group overflow-hidden">
+        <div className="flex items-center justify-center group-hover:scale-110 transition ease-in-out 1s bg-[url('/i.jpeg')] bg-center bg-cover bg-no-repeat bg-black/50 bg-blend-overlay h-44">
           <h2 className="text-white text-2xl font-semibold">Curtains</h2>
         </div>
         </Link>
@@ -85,14 +128,14 @@ export default function Home({ data, product }: string | object) {
 }
 export const getStaticProps: GetStaticProps = async () => {
   const query = '*[_type=="deals"]';
-  const productQuery = '*[_type=="product"]';
+  
   const data = await client.fetch(query);
-  const product = await client.fetch(productQuery);
+
 
   return {
-    props: { data, product },
+    props: { data },
   };
 };
-Home.getLayout = function getLayout(page: ReactElement) {
+Home.getLayout = function getLayout(page:ReactElement) {
   return <Layout>{page}</Layout>;
 };

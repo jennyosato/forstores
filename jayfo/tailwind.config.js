@@ -1,3 +1,5 @@
+const { keyframes } = require('styled-components');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -13,9 +15,18 @@ module.exports = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       gridTemplateColumns: {
-        fluid: "repeat(auto-fit, minmax(22rem, 1fr))",
+        fluid: "repeat(auto-fit, minmax(15rem, 1fr))",
         fluids: "repeat(auto-fit, minmax(15rem, 1fr))"
+      },
+    keyframes: {
+      marqx: {
+        from: {transform: 'translateX(0)'},
+        to: {transform: 'translateX(-40%)'}
       }
+    },
+    animation: {
+      marquee: 'marqx 15s linear infinite'
+    }
     },
   },
   plugins: [],

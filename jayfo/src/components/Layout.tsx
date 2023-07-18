@@ -1,5 +1,6 @@
 import React from 'react'
 import Navbar from './Navbar'
+import Footer from './footer'
 
 
 const Layout = ({children}:{children:React.ReactNode}) => {
@@ -9,6 +10,8 @@ const Layout = ({children}:{children:React.ReactNode}) => {
     <div className='relative top-14'>
     {children}
     </div>
+    <Footer />
+    
     
     </>
   )

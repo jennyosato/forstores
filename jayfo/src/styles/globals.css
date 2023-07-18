@@ -25,6 +25,14 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+/* background: rgb(228, 228, 228); */
+
 img{
   object-fit: cover;
+}
+.tracks:hover{
+  animation-play-state: paused;
+}
+button:hover{
+  transform: scaleX(1.02);
 }
